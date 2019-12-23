@@ -1,0 +1,7 @@
+REST = REpresentational State Transfer
+JSON = JavaScript Object Notation.
+HTTP Methods
+Get POST PUT PATCH DELETE OPTIONS etc
+CORS = Cross Origin Resource Sharing
+https://academind.com/learn/node-js/building-a-restful-api-with/
+building restful api from Scratch
