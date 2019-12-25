@@ -39,7 +39,7 @@ app.use(errorController.get404);
 //   app.listen(3000);
 // });
 mongoose
-  .connect('mongodb+srv://user101:8wjw1HpFJZvd8kd4@cluster0-56yha.mongodb.net/shop?retryWrites=true&w=majority')
+  .connect('mongodb+srv://user101:8wjw1HpFJZvd8kd4@cluster0-56yha.mongodb.net/shop?retryWrites=true&w=majority', {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
   .then((res) => {
     User.findOne().then((user) => {
 
