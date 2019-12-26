@@ -113,7 +113,7 @@ class Feed extends Component {
       url = 'URL';
     }
 
-    console.log(postData.title)
+    // console.log(postData.title)
     // fetch(url, {
     //   method: method,
     //   headers:{
@@ -125,13 +125,16 @@ class Feed extends Component {
     //     content: postData.content
     //   })
     // })
+
+    const formData = new FormData();
+    formData.append('title', postData.title);
+    formData.append('content', postData.content);
+    formData.append('image', postData.image);
+
     axios({
       url: url,
       method: 'POST',
-      data:{
-        title:  postData.title,
-        content: postData.content
-      }
+      data: formData
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
