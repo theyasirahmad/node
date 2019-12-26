@@ -30,7 +30,10 @@ router.put('/signup', [
         .trim()
         .not()
         .isEmpty()
-],authController.signup);
+], authController.signup);
+
+
+router.post('/login', authController.loginUser);
 
 
 module.exports = router;

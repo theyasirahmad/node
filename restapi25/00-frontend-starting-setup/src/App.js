@@ -60,7 +60,18 @@ class App extends Component {
   loginHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch('URL')
+    // fetch('http://localhost:8080/auth/login',{
+    //   method:'POST',
+
+    // })
+    axios({
+      url: 'http://localhost:8080/auth/login',
+      method: 'POST',
+      data: {
+        email: authData.email,
+        password: authData.password
+      }
+    })
       .then(res => {
         if (res.status === 422) {
           throw new Error('Validation failed.');
@@ -69,7 +80,7 @@ class App extends Component {
           console.log('Error!');
           throw new Error('Could not authenticate you!');
         }
-        return res.json();
+        return res.data
       })
       .then(resData => {
         console.log(resData);
