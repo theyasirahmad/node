@@ -6,16 +6,18 @@ const path = require('path');
 const uuidv4 = require('uuid/v4')
 
 const feedRoutes = require('./routes/feed');
+const authRoutes = require('./routes/auth');
+
 
 const app = express();
 
 
- 
+
 const fileStorage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, 'images');
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, uuidv4())
     }
 });
@@ -53,14 +55,15 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/feed', feedRoutes);
+app.use('/auth', authRoutes);
 
 
 app.use((error, req, res, next) => {
     console.log(error);
     const status = error.statusCode;
     const message = error.message;
-    res.status(status).json({ message: message })
-
+    const data = error.data;
+    res.status(status).json({ message: message, data: data });
 
 });
 

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 import Layout from './components/Layout/Layout';
 import Backdrop from './components/Backdrop/Backdrop';
@@ -17,7 +18,7 @@ class App extends Component {
   state = {
     showBackdrop: false,
     showMobileNav: false,
-    isAuth: true,
+    isAuth: false,
     token: null,
     userId: null,
     authLoading: false,
@@ -100,7 +101,26 @@ class App extends Component {
   signupHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch('URL')
+    // fetch('http://localhost:8080/auth/signup', {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     email: authData.signupForm.email.value,
+    //     name: authData.signupForm.name.value,
+    //     password: authData.signupForm.password.value
+    //   })
+    // })
+    axios({
+      url: 'http://localhost:8080/auth/signup',
+      method: 'PUT',
+      data: {
+        email: authData.signupForm.email.value,
+        name: authData.signupForm.name.value,
+        password: authData.signupForm.password.value
+      }
+    })
       .then(res => {
         if (res.status === 422) {
           throw new Error(
@@ -111,7 +131,7 @@ class App extends Component {
           console.log('Error!');
           throw new Error('Creating a user failed!');
         }
-        return res.json();
+        return res.data
       })
       .then(resData => {
         console.log(resData);
