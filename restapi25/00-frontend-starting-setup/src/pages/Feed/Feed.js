@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import axios from 'axios';
 
 import Post from '../../components/Feed/Post/Post';
 import Button from '../../components/Button/Button';
@@ -112,21 +113,33 @@ class Feed extends Component {
       url = 'URL';
     }
 
-    fetch(url, {
-      method: method,
-      headers:{
-        'Content-Type':'applicaion/json'
-      },
-      body:JSON.stringify({
+    console.log(postData.title)
+    // fetch(url, {
+    //   method: method,
+    //   headers:{
+    //     'Accept': 'application/json',
+    //     'Content-Type':'applicaion/json'
+    //   },
+    //   body:JSON.stringify({
+    //     title:  postData.title,
+    //     content: postData.content
+    //   })
+    // })
+    axios({
+      url: url,
+      method: 'POST',
+      data:{
         title:  postData.title,
         content: postData.content
-      })
+      }
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Creating or editing a post failed!');
         }
-        return res.json();
+
+        console.log(res)
+        return res.data
       })
       .then(resData => {
         console.log(resData)
