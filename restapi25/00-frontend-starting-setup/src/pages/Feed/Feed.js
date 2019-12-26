@@ -24,7 +24,11 @@ class Feed extends Component {
   };
 
   componentDidMount() {
-    fetch('URL')
+    fetch('http://localhost:8080/auth/status', {
+      headers: {
+        Authorization: 'Bearer ' + this.props.token
+      }
+    })
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Failed to fetch user status.');
@@ -52,8 +56,8 @@ class Feed extends Component {
       page--;
       this.setState({ postPage: page });
     }
-    fetch('http://localhost:8080/feed/posts?page=' + page,{
-      headers:{
+    fetch('http://localhost:8080/feed/posts?page=' + page, {
+      headers: {
         Authorization: 'Bearer ' + this.props.token
       }
     })
@@ -81,12 +85,31 @@ class Feed extends Component {
 
   statusUpdateHandler = event => {
     event.preventDefault();
-    fetch('URL')
+    // fetch('http://localhost:8080/auth/status', {
+    //   method: 'PATCH',
+    //   headers: {
+    //     Authorization: 'Bearer ' + this.props.token
+    //   },
+    //   body: JSON.stringify({
+    //     status: this.state.status
+    //   })
+
+    // })
+    axios({
+      url: 'http://localhost:8080/auth/status',
+      headers: {
+        Authorization: 'Bearer ' + this.props.token
+      },
+      method:'PATCH',
+      data: {
+        status: this.state.status
+      }
+    })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Can't update status!");
         }
-        return res.json();
+        return res.data;
       })
       .then(resData => {
         console.log(resData);
@@ -146,7 +169,7 @@ class Feed extends Component {
 
     axios({
       url: url,
-      headers:{
+      headers: {
         Authorization: 'Bearer ' + this.props.token
       },
       method: method,
@@ -206,7 +229,7 @@ class Feed extends Component {
     this.setState({ postsLoading: true });
     fetch('http://localhost:8080/feed/post/' + postId, {
       method: 'DELETE',
-      headers:{
+      headers: {
         Authorization: 'Bearer ' + this.props.token
       },
     })
